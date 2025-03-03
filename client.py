@@ -60,11 +60,15 @@ playback_thread = None        # Reference to the playback monitor thread
 def vad_worker():
     """
     Continuously reads audio from the microphone and uses webrtcvad to detect speech.
+    When playback is active, the threshold for detecting speech is increased to reduce
+    false positives from speaker output.
     Sets or clears the speech_started_event accordingly.
     """
     speech_frames_counter = 0
     last_voice_time = time.time()
-    
+    # Base threshold for standard deviation. Tune this value as needed.
+    base_std_threshold = 7000
+
     with sd.RawInputStream(samplerate=sample_rate, blocksize=frame_size,
                            dtype='int16', channels=1) as stream:
         while running:
@@ -73,13 +77,28 @@ def vad_worker():
             except Exception as e:
                 print(f"Error reading audio: {e}")
                 continue
-            
-            try:
-                is_speech = vad.is_speech(bytes(data), sample_rate)
-            except Exception as e:
-                print(f"VAD error: {e}")
+
+            # Convert data to a numpy array for analysis.
+            frame = np.frombuffer(data, dtype=np.int16)
+            frame_std = np.std(frame)
+
+            # Adjust the threshold if playback is active.
+            with playback_lock:
+                if playback_active:
+                    effective_threshold = base_std_threshold * 3  # Increase threshold during playback.
+                else:
+                    effective_threshold = base_std_threshold
+
+            # Use the effective threshold for noise filtering.
+            if frame_std < effective_threshold:
                 is_speech = False
-            
+            else:
+                try:
+                    is_speech = vad.is_speech(data, sample_rate)
+                except Exception as e:
+                    print(f"VAD error: {e}")
+                    is_speech = False
+
             if is_speech:
                 speech_frames_counter += 1
                 last_voice_time = time.time()

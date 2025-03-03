@@ -41,3 +41,8 @@ Now, connect a client:
 python3 client.py
 ```
 
+## Some important points to note:
+I have used a threshold to check the standard deviation of the input speech received so that it does not think background noise as speech and gets stuck in an infinite loop thinking the user is speaking. Hence,
+
+- Put your microphone input level to 100%
+- When the playback is going on, the threshold would auto increase to avoid playback itself triggering the system to stop playing back by making system think that the playback is actual speech by the user. So, when the playback is going on, to interrupt it, speak a bit louder.
