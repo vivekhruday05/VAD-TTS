@@ -1,0 +1,9 @@
+kokoro>=0.8.2
+torch>=1.10
+numpy
+soundfile
+websockets
+pyaudio
+webrtcvad
+pydub
+simpleaudio
