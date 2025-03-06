@@ -48,6 +48,10 @@ python3 client.py
 
 If you want the random sentences to be played in Hindi, you can run `hindi_server.py` and `hindi_client.py` instead of `client.py` and `server.py`.
 
+If you want to use Silero VAD, use the client file named with `cilero` in it.
+
+Also, use only the same language server as the language client being used.
+
 ## Some important points to note:
 I have used a threshold to check the standard deviation of the input speech received so that it does not think background noise as speech and gets stuck in an infinite loop thinking the user is speaking. Hence,
 

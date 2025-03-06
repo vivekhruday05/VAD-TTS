@@ -7,3 +7,5 @@ pyaudio
 webrtcvad
 pydub
 simpleaudio
+silero-vad
+sounddevice
