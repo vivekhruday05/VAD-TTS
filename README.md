@@ -3,12 +3,17 @@ This project demonstrates a real-time interactive text-to-speech (TTS) system us
 
 The project consists of two main components:
 
-- `Server (server.py)`
+- `server (server.py)`
 The server hosts a WebSocket API that listens for text requests, synthesizes speech using the Kokoro TTS pipeline, and returns synthesized audio in WAV format.
 
-- `Client (client.py)`
+- `client (client.py)`
 The client continuously captures microphone input with PyAudio and applies VAD (using webrtcvad) to detect when the user starts or stops speaking. When speech is detected, a random text statement is sent to the server. When the user stops speaking, the client receives and plays back the synthesized audio. If the user speaks during playback, the system interrupts the audio to handle the new input in real time.
 
+- `hindi_server (server.py)`
+Same as the normal server but the model is set to receive Hindi texts and send Hindi speech.
+
+- `hindi_client (client.py)`
+Same as the normal client but the model's random sentences are Hindi texts and palys back Hindi speech.
 
 
 ## Installing required packages
@@ -40,6 +45,8 @@ Now, connect a client:
 ```bash
 python3 client.py
 ```
+
+If you want the random sentences to be played in Hindi, you can run `hindi_server.py` and `hindi_client.py` instead of `client.py` and `server.py`.
 
 ## Some important points to note:
 I have used a threshold to check the standard deviation of the input speech received so that it does not think background noise as speech and gets stuck in an infinite loop thinking the user is speaking. Hence,
