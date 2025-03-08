@@ -15,6 +15,9 @@ Same as the normal server but the model is set to receive Hindi texts and send H
 - `hindi_client (client.py)`
 Same as the normal client but the model's random sentences are Hindi texts and palys back Hindi speech.
 
+- Files with name `silero` in them used "Silero VAD" intead of WebRTC.
+
+- `hindi_test.py:` This code take a hindi text as input and saves the audio file for the same.
 
 ## Installing required packages
 In your terminal run the following commands to download the required packages:
